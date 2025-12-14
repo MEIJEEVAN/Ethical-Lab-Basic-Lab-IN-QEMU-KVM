@@ -1,6 +1,41 @@
 # Ethical-Lab-Basic-Lab-IN-QEMU-KVM
 
-Hi! guys this is about setting up a minimal lab to learn ethical hacking via Kali Linux and Metasploitable Vms
+Hi! guys this is about setting up a minimal lab to learn ethical hacking via Kali Linux and Metasploitable Vms.
+
+Here, Kali Linux (Attacker) + Metasploitable2 (Target)
+
+This repository provides a minimal, fast, and safe ethical hacking lab using QEMU + KVM.
+No VirtualBox. No VMware. No GUI bloat.
+
+The lab supports two Kali networking modes:
+1.Offline (isolated lab) → for attacking Metasploitable
+2.Online (NAT internet) → for updates and tool installation
+Metasploitable never gets internet access.
+
+# ⚠️ Legal & Safety Warning
+
+*Metasploitable2 is intentionally vulnerable
+*Never expose it to the internet
+*Never bridge it to your LAN
+*Use this lab only for learning and ethical purposes
+
+If you don’t understand isolation, don’t improvise.
+
+# Lab Architecture
+Kali Linux (Attacker)
+        |
+        |  (isolated socket network)
+        |
+Metasploitable2 (Target)
+
+Offline mode → socket networking
+Online mode → user-mode NAT (Kali only)
+
+Requirements:
+*Linux Environment(Dual Booted or standalone)
+*CPU with virtualization support (Intel VT-x / AMD-V)
+*KVM enabled
+
 1) Creating QEMU + KVM setup
 
    
@@ -8,29 +43,28 @@ Hi! guys this is about setting up a minimal lab to learn ethical hacking via Kal
 
 sample folder structure:
 vm-lab/
-├── isos/
-│   ├── ubuntu.iso
-│   └── other.iso files...
 ├── kali/
 │   └── kali.qcow2
 ├── target/
-│   └── target.qcow2
+│   └── metasploitable.qcow2
+├── scripts/
+│   ├── start-kali.sh
+│   └── start-metasploitable.sh
 └── shared/
 
-Download the Kali Virtual Machine Image (QEMU version)
-
+# Download the Kali Virtual Machine Image (QEMU version)
 Get the official pre-built QEMU image from Kali (”.qcow2” format).
 Filename looks like: kali-linux-2025.3-qemu-amd64.qcow2
-
+link-> https://www.kali.org/get-kali/#kali-virtual-machines
 This one boots instantly. No installer. No ISO.
 Put the file in the folder u use.
 
-Step 1 — Download Metasploitable 2
+# Step 1 — Download Metasploitable 2
 Get the VM ZIP from Rapid7 (official):
-https://sourceforge.net/projects/metasploitable/files/Metasploitable2/
+link -> https://sourceforge.net/projects/metasploitable/files/Metasploitable2/
 Download Metasploitable2-Linux.zip from it.
 
-Step 2 — Extract the Disk
+# Step 2 — Extract the Disk
 Extract it:
 unzip ~/Downloads/Metasploitable2-Linux.zip -d ~/vm-lab/target/
 
@@ -111,7 +145,18 @@ auto eth0
 iface eth0 inet static
     address 10.0.0.2
     netmask 255.255.255.0
+or
+Kali uses NetworkManager.
+Configure static IP using nmcli:
+$ nmcli con show
+Then:
+$ nmcli con mod "Wired connection 1" ipv4.method manual \
+ipv4.addresses 10.0.0.2/24
 
+$ nmcli con up "Wired connection 1"
+
+Verify: $ ip a
+    
 -->Save and reboot.
 
 After this, eth0 comes up with the same IP automatically every boot.
