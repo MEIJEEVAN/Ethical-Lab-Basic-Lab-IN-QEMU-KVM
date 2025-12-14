@@ -62,8 +62,8 @@ Metasploitable2 (Target)
 
 * Linux environment (dual-boot or standalone)
 * CPU with virtualization support (Intel VT-x / AMD-V)
-* KVM enabled
-* QEMU installed
+* KVM enabled [Check the images in the code section]
+* QEMU installed [Check the images in the code section]
 
 Check KVM support:
 
