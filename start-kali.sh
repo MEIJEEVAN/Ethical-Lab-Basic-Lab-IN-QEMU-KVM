@@ -17,7 +17,7 @@ case $choice in
       -smp 2 \
       -m 2048 \
       -drive file="$KALI_DISK",format=qcow2 \
-      -nic socket,connect=127.0.0.1:4567,mac=52:54:00:12:34:02
+      -nic socket,connect=127.0.0.1:4567,mac=52:54:00:aa:01:02
     ;;
   2)
     echo "Starting Kali in ONLINE mode (NAT internet)"
