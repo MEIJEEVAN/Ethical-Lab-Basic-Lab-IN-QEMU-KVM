@@ -264,6 +264,7 @@ Save and reboot.
 ---
 
 ### Kali Linux
+Method 1:
 
 Kali uses **NetworkManager**.
 
@@ -287,7 +288,22 @@ Verify:
 ```bash
 ip a
 ```
+Method 2:
+Edit:
 
+```bash
+sudo nano /etc/network/interfaces
+```
+
+Add:
+```bash
+auto eth0
+iface eth0 inet static
+    address 10.0.0.2
+    netmask 255.255.255.0
+```
+
+Save and reboot.
 ---
 
 ## Startup Scripts (Recommended)
